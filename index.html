@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html lang="ru" id="htmlLang">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>YouTools - Ресурсы для ютуберов</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', sans-serif;
+        }
+
+        :root {
+            --dark-bg: #1a1a1a;
+            --light-bg: #ffffff;
+            --primary-text: #e0e0e0;
+            --secondary-text: #808080;
+            --accent: #404040;
+            --hover-effect: rgba(255, 255, 255, 0.1);
+        }
+
+        body {
+            background-color: var(--dark-bg);
+            color: var(--primary-text);
+            transition: background 0.3s, color 0.3s;
+        }
+
+        body.light-theme {
+            --dark-bg: #f5f5f5;
+            --light-bg: #ffffff;
+            --primary-text: #333333;
+            --secondary-text: #666666;
+            --accent: #cccccc;
+            --hover-effect: rgba(0, 0, 0, 0.05);
+        }
+
+        .sidebar {
+            position: fixed;
+            left: 0;
+            top: 0;
+            width: 250px;
+            height: 100vh;
+            background: var(--dark-bg);
+            padding: 20px;
+            box-shadow: 4px 0 15px rgba(0, 0, 0, 0.2);
+            z-index: 1000;
+        }
+
+        .logo {
+            font-size: 24px;
+            font-weight: bold;
+            margin-bottom: 40px;
+            color: var(--primary-text);
+            text-align: center;
+        }
+
+        .nav-button {
+            width: 100%;
+            padding: 15px;
+            margin: 10px 0;
+            background: none;
+            border: none;
+            color: var(--primary-text);
+            text-align: left;
+            cursor: pointer;
+            border-radius: 8px;
+            transition: all 0.3s;
+        }
+
+        .nav-button:hover {
+            background: var(--hover-effect);
+            transform: translateX(10px);
+        }
+
+        .settings-menu {
+            position: relative;
+        }
+
+        .dropdown-content {
+            display: none;
+            position: absolute;
+            left: 100%;
+            top: 0;
+            min-width: 200px;
+            background: var(--dark-bg);
+            box-shadow: 4px 4px 15px rgba(0, 0, 0, 0.2);
+            border-radius: 8px;
+            padding: 10px;
+        }
+
+        .settings-menu:hover .dropdown-content {
+            display: block;
+            animation: fadeIn 0.3s;
+        }
+
+        .theme-switcher {
+            position: absolute;
+            bottom: 20px;
+            left: 20px;
+        }
+
+        .main-content {
+            margin-left: 250px;
+            padding: 40px;
+            min-height: 100vh;
+        }
+
+        .card-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 25px;
+            margin-top: 30px;
+        }
+
+        .card {
+            background: var(--dark-bg);
+            border: 1px solid var(--accent);
+            padding: 20px;
+            border-radius: 12px;
+            transition: transform 0.3s;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+        }
+
+        .source-section {
+            display: none;
+        }
+
+        .source-card {
+            padding: 15px;
+            border: 1px dashed var(--accent);
+            margin: 10px 0;
+            border-radius: 8px;
+        }
+
+        .download-btn {
+            background: var(--accent);
+            border: none;
+            padding: 8px 15px;
+            color: var(--primary-text);
+            border-radius: 5px;
+            cursor: pointer;
+            float: right;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .language-option {
+            padding: 10px;
+            cursor: pointer;
+            border-radius: 6px;
+        }
+
+        .language-option:hover {
+            background: var(--hover-effect);
+        }
+    </style>
+</head>
+<body>
+    <nav class="sidebar">
+        <div class="logo">YouTools</div>
+        
+        <button class="nav-button" onclick="showSection('main')" data-lang-key="main">🏠 Главная</button>
+        <button class="nav-button" onclick="showSection('sources')" data-lang-key="sources">📁 Исходники</button>
+        <button class="nav-button" data-lang-key="video">🎬 Видеоресурсы</button>
+        <button class="nav-button" data-lang-key="community">💬 Сообщества</button>
+        <button class="nav-button" data-lang-key="analytics">📈 Аналитика</button>
+        
+        <div class="settings-menu">
+            <button class="nav-button" data-lang-key="settings">⚙️ Настройки</button>
+            <div class="dropdown-content">
+                <div class="language-option" onclick="changeLanguage('ru')">🇷🇺 Русский</div>
+                <div class="language-option" onclick="changeLanguage('en')">🇺🇸 English</div>
+                <div class="language-option" onclick="toggleTheme()" data-lang-key="theme">🌓 Сменить тему</div>
+            </div>
+        </div>
+    </nav>
+
+    <main class="main-content">
+        <!-- Главная секция -->
+        <div id="mainSection">
+            <h1 data-lang-key="welcome">Добро пожаловать, Творц!</h1>
+            <div class="card-grid">
+                <div class="card">
+                    <h2 data-lang-key="tutorials">🎥 Видеоуроки</h2>
+                    <p data-lang-key="tutorialsDesc">Полезные материалы по монтажу и обработке</p>
+                </div>
+                <div class="card">
+                    <h2 data-lang-key="music">🎵 Бесплатная музыка</h2>
+                    <p data-lang-key="musicDesc">Коллекция Royalty-free треков</p>
+                </div>
+                <div class="card">
+                    <h2 data-lang-key="analyticsCard">📊 Аналитика</h2>
+                    <p data-lang-key="analyticsDesc">Инструменты анализа статистики канала</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Секция исходников -->
+        <div class="source-section" id="sourceSection">
+            <h1 data-lang-key="sources">Исходные материалы</h1>
+            <div id="sourceList"></div>
+        </div>
+    </main>
+
+    <script>
+        // Локализация
+        const translations = {
+            'ru': {
+                'welcome': 'Добро пожаловать, Творц!',
+                'sources': 'Исходные материалы',
+                'download': 'Скачать',
+                'main': 'Главная',
+                'settings': 'Настройки',
+                'theme': 'Сменить тему',
+                'tutorials': '🎥 Видеоуроки',
+                'tutorialsDesc': 'Полезные материалы по монтажу и обработке',
+                'music': '🎵 Бесплатная музыка',
+                'musicDesc': 'Коллекция Royalty-free треков',
+                'analyticsCard': '📊 Аналитика',
+                'analyticsDesc': 'Инструменты анализа статистики канала',
+                'video': '🎬 Видеоресурсы',
+                'community': '💬 Сообщества',
+                'analytics': '📈 Аналитика'
+            },
+            'en': {
+                'welcome': 'Welcome, Creator!',
+                'sources': 'Source Materials',
+                'download': 'Download',
+                'main': 'Home',
+                'settings': 'Settings',
+                'theme': 'Change Theme',
+                'tutorials': '🎥 Video Tutorials',
+                'tutorialsDesc': 'Useful materials for editing and processing',
+                'music': '🎵 Free Music',
+                'musicDesc': 'Collection of Royalty-free tracks',
+                'analyticsCard': '📊 Analytics',
+                'analyticsDesc': 'Channel statistics analysis tools',
+                'video': '🎬 Video Resources',
+                'community': '💬 Communities',
+                'analytics': '📈 Analytics'
+            }
+        };
+
+        function changeLanguage(lang) {
+            document.getElementById('htmlLang').setAttribute('lang', lang);
+            document.querySelectorAll('[data-lang-key]').forEach(el => {
+                const key = el.getAttribute('data-lang-key');
+                el.textContent = translations[lang][key];
+            });
+        }
+
+        // Система исходников
+        const sources = [
+            { 
+                name: 'Шаблон превью видео', 
+                url: 'sources/preview.psd',
+                type: 'PSD'
+            },
+            {
+                name: 'Слитые паки',
+                url: 'https://drive.google.com/file/d/1X8PCEHUdr3nLk-QLPozKTgfqmpkfu_MU/view?usp=sharing',
+                type: 'RAR'
+            }
+        ];
+
+        function showSection(sectionName) {
+            document.getElementById('mainSection').style.display = 
+                sectionName === 'main' ? 'block' : 'none';
+            document.getElementById('sourceSection').style.display = 
+                sectionName === 'sources' ? 'block' : 'none';
+            
+            if(sectionName === 'sources') {
+                loadSources();
+            }
+        }
+
+        function loadSources() {
+            const container = document.getElementById('sourceList');
+            container.innerHTML = sources.map(source => `
+                <div class="source-card">
+                    <h3>${source.name}</h3>
+                    <p>Формат: ${source.type}</p>
+                    <button class="download-btn" 
+                            onclick="window.open('${source.url}')" 
+                            data-lang-key="download">
+                        Скачать
+                    </button>
+                </div>
+            `).join('');
+        }
+
+        // Переключение темы
+        function toggleTheme() {
+            document.body.classList.toggle('light-theme');
+        }
+
+        // Инициализация
+        document.addEventListener('DOMContentLoaded', () => {
+            loadSources();
+            changeLanguage('ru'); // Устанавливаем русский язык по умолчанию
+            document.body.style.opacity = '0';
+            setTimeout(() => {
+                document.body.style.transition = 'opacity 0.5s';
+                document.body.style.opacity = '1';
+            }, 100);
+        });
+    </script>
+</body>
+</html>
